@@ -1,2 +1,2 @@
-SQLite/* linguist-vendored
+*.c linguist-vendored
 *.cpp linguist-vendored=false
