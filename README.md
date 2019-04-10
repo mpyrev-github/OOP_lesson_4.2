@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-﻿# Language / Язык
-=======
 # Language / Язык
->>>>>>> e8b1f1a4cb95921426f2c04c725c8586c223c582
 * [English version](https://github.com/vastXgithub/OOP_lesson_4.2/blob/master/README.md#oop)
 * [Русская версия](https://github.com/vastXgithub/OOP_lesson_4.2/blob/master/README.md#%D0%BE%D0%BE%D0%BF)
 # OOP
