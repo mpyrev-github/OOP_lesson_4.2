@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+п»ї//---------------------------------------------------------------------------
 
 #include <vcl.h>
 #pragma hdrstop
@@ -19,12 +19,12 @@ TsqliteForm *sqliteForm;
 __fastcall TsqliteForm::TsqliteForm(TComponent* Owner)
 	: TForm(Owner)
 {
-	VST_SQLite->NodeDataSize = sizeof(VSTStructVariable);  // Задаем размер VST согласно структуре
+	VST_SQLite->NodeDataSize = sizeof(VSTStructVariable);  // Р—Р°РґР°РµРј СЂР°Р·РјРµСЂ VST СЃРѕРіР»Р°СЃРЅРѕ СЃС‚СЂСѓРєС‚СѓСЂРµ
 }
 //---------------------------------------------------------------------------
 void __fastcall TsqliteForm::VST_SQLiteGetText(TBaseVirtualTree *Sender, PVirtualNode Node,
 		  TColumnIndex Column, TVSTTextType TextType, UnicodeString &CellText)
-		// Обрабатчик события OnGetText для отображения содержимого таблицы
+		// РћР±СЂР°Р±Р°С‚С‡РёРє СЃРѕР±С‹С‚РёСЏ OnGetText РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С‚Р°Р±Р»РёС†С‹
 {
 	if (!Node) return;
 	VSTStructVariable *nodeData = (VSTStructVariable *)Sender -> GetNodeData(Node);
@@ -38,42 +38,42 @@ void __fastcall TsqliteForm::VST_SQLiteGetText(TBaseVirtualTree *Sender, PVirtua
 
 void __fastcall TsqliteForm::pullButtonClick(TObject *Sender)
 {
-	VST_SQLite -> Clear();      // Очищаем дерево
+	VST_SQLite -> Clear();      // РћС‡РёС‰Р°РµРј РґРµСЂРµРІРѕ
 	sqlite3* db = NULL;
-	sqlite3_open("places.sqlite", &db);     // Открываем интересующую БД
+	sqlite3_open("places.sqlite", &db);     // РћС‚РєСЂС‹РІР°РµРј РёРЅС‚РµСЂРµСЃСѓСЋС‰СѓСЋ Р‘Р”
 
-	if (db == NULL){     // Обработка события отсутствия БД
-		statusLabel -> Caption = "Ошибка открытия/создания БД.";
+	if (db == NULL){     // РћР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёСЏ РѕС‚СЃСѓС‚СЃС‚РІРёСЏ Р‘Р”
+		statusLabel -> Caption = "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ/СЃРѕР·РґР°РЅРёСЏ Р‘Р”.";
 		return;
 	}
 
 	sqlite3_stmt *pullStatement;
 	int result = sqlite3_prepare_v2(db,"select * from moz_places",
-									-1, &pullStatement, NULL);      // Создаем запрос на вывод таблицы
+									-1, &pullStatement, NULL);      // РЎРѕР·РґР°РµРј Р·Р°РїСЂРѕСЃ РЅР° РІС‹РІРѕРґ С‚Р°Р±Р»РёС†С‹
 
-	if (result != SQLITE_OK){        // Обработка события ошибки SQL-запроса
+	if (result != SQLITE_OK){        // РћР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёСЏ РѕС€РёР±РєРё SQL-Р·Р°РїСЂРѕСЃР°
 		const char *errmsg = sqlite3_errmsg(db);
-		char errText[] =  "Ошибка SQL-запроса: ";
+		char errText[] =  "РћС€РёР±РєР° SQL-Р·Р°РїСЂРѕСЃР°: ";
 		statusLabel -> Caption = strcat(errText,errmsg);
 	}
 	else {
-		statusLabel -> Caption = "Результаты получены";
+		statusLabel -> Caption = "Р РµР·СѓР»СЊС‚Р°С‚С‹ РїРѕР»СѓС‡РµРЅС‹";
 
-		while (sqlite3_step(pullStatement) != SQLITE_DONE) {        // Перебираем записи базы данных
-			PVirtualNode entryNode = VST_SQLite -> AddChild(VST_SQLite -> RootNode);        // Добавляем очередную запись
-			VSTStructVariable *nodeData = (VSTStructVariable*)VST_SQLite -> GetNodeData(entryNode);     // Заполняем данные узла
+		while (sqlite3_step(pullStatement) != SQLITE_DONE) {        // РџРµСЂРµР±РёСЂР°РµРј Р·Р°РїРёСЃРё Р±Р°Р·С‹ РґР°РЅРЅС‹С…
+			PVirtualNode entryNode = VST_SQLite -> AddChild(VST_SQLite -> RootNode);        // Р”РѕР±Р°РІР»СЏРµРј РѕС‡РµСЂРµРґРЅСѓСЋ Р·Р°РїРёСЃСЊ
+			VSTStructVariable *nodeData = (VSTStructVariable*)VST_SQLite -> GetNodeData(entryNode);     // Р—Р°РїРѕР»РЅСЏРµРј РґР°РЅРЅС‹Рµ СѓР·Р»Р°
 				nodeData -> id = sqlite3_column_int(pullStatement, 0);
 				nodeData -> url  = (wchar_t*)sqlite3_column_text16(pullStatement, 1);
 				nodeData -> data  = (wchar_t*)sqlite3_column_text16(pullStatement, 2);
 		}
 	}
 
-	sqlite3_finalize(pullStatement);		// Очищаем Statement
-	sqlite3_close(db);      // Закрываем БД
+	sqlite3_finalize(pullStatement);		// РћС‡РёС‰Р°РµРј Statement
+	sqlite3_close(db);      // Р—Р°РєСЂС‹РІР°РµРј Р‘Р”
 }
 //---------------------------------------------------------------------------
 void __fastcall TsqliteForm::VST_SQLiteFreeNode(TBaseVirtualTree *Sender, PVirtualNode Node)
-		// Обрабатчик события OnFreeNode для очистки узла
+		// РћР±СЂР°Р±Р°С‚С‡РёРє СЃРѕР±С‹С‚РёСЏ OnFreeNode РґР»СЏ РѕС‡РёСЃС‚РєРё СѓР·Р»Р°
 {
 	VSTStructVariable *nodeData = (VSTStructVariable *)Sender -> GetNodeData(Node);
 	nodeData -> ~VSTStruct();
@@ -82,15 +82,15 @@ void __fastcall TsqliteForm::VST_SQLiteFreeNode(TBaseVirtualTree *Sender, PVirtu
 
 void __fastcall TsqliteForm::delRowButtonClick(TObject *Sender)
 {
-	if (VST_SQLite -> FocusedNode == NULL) {        // Обработка события отсутствия выбранной строки
+	if (VST_SQLite -> FocusedNode == NULL) {        // РћР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёСЏ РѕС‚СЃСѓС‚СЃС‚РІРёСЏ РІС‹Р±СЂР°РЅРЅРѕР№ СЃС‚СЂРѕРєРё
 		alertForm -> Visible=true;
 		return;
 	}
 
-	PVirtualNode selectedNode = VST_SQLite -> FocusedNode;      // Узнаем какой узел выделен
+	PVirtualNode selectedNode = VST_SQLite -> FocusedNode;      // РЈР·РЅР°РµРј РєР°РєРѕР№ СѓР·РµР» РІС‹РґРµР»РµРЅ
 	int selectedNodeIndex = NULL;
-	selectedNodeIndex = selectedNode -> Index;      // Сохраним его номер для последующего выделения
-	int SelectedRowCount = VST_SQLite->SelectedCount;       // Количество выделенных записей
+	selectedNodeIndex = selectedNode -> Index;      // РЎРѕС…СЂР°РЅРёРј РµРіРѕ РЅРѕРјРµСЂ РґР»СЏ РїРѕСЃР»РµРґСѓСЋС‰РµРіРѕ РІС‹РґРµР»РµРЅРёСЏ
+	int SelectedRowCount = VST_SQLite->SelectedCount;       // РљРѕР»РёС‡РµСЃС‚РІРѕ РІС‹РґРµР»РµРЅРЅС‹С… Р·Р°РїРёСЃРµР№
 	std::vector<PVirtualNode> selectedNodes;
 	std::vector<VSTStructVariable *> nodeData;
 	std::vector<int> idv;
@@ -98,80 +98,80 @@ void __fastcall TsqliteForm::delRowButtonClick(TObject *Sender)
 	for (int i = 0; i < SelectedRowCount; i++) {
 		  if (i==0) selectedNodes.push_back(VST_SQLite -> GetFirstSelected());
 		  else selectedNodes.push_back(VST_SQLite -> GetNextSelected(selectedNodes[i-1]));
-		  nodeData.push_back((VSTStructVariable *)VST_SQLite -> GetNodeData(selectedNodes[i]));		// Получим дерево для редактирования
+		  nodeData.push_back((VSTStructVariable *)VST_SQLite -> GetNodeData(selectedNodes[i]));		// РџРѕР»СѓС‡РёРј РґРµСЂРµРІРѕ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
 		  idv.push_back(nodeData[i] -> id);
 	}
 
 	if (SelectedRowCount>0)
 	{
-		// Обработка события удаления первого/последнего узла из списка
+		// РћР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёСЏ СѓРґР°Р»РµРЅРёСЏ РїРµСЂРІРѕРіРѕ/РїРѕСЃР»РµРґРЅРµРіРѕ СѓР·Р»Р° РёР· СЃРїРёСЃРєР°
 		if ((VST_SQLite -> GetNext(selectedNodes[SelectedRowCount-1])==NULL) && (VST_SQLite -> GetLast(selectedNodes[SelectedRowCount-1])==NULL)) {
 		   VST_SQLite -> RemoveFromSelection;
 		}
 		else {
 			if (VST_SQLite -> GetNext(selectedNodes[SelectedRowCount-1])==NULL) {
 				PVirtualNode selectedNext = VST_SQLite -> GetLast(selectedNodes[SelectedRowCount-1]);
-				VST_SQLite -> AddToSelection(selectedNext);     // Переставляем выделение на предыдущий узел
+				VST_SQLite -> AddToSelection(selectedNext);     // РџРµСЂРµСЃС‚Р°РІР»СЏРµРј РІС‹РґРµР»РµРЅРёРµ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ СѓР·РµР»
 			}
 			else{
 				PVirtualNode selectedNext = VST_SQLite -> GetNext(selectedNodes[SelectedRowCount-1]);
-				VST_SQLite -> AddToSelection(selectedNext);     // Переставляем выделение на слудующий узел
+				VST_SQLite -> AddToSelection(selectedNext);     // РџРµСЂРµСЃС‚Р°РІР»СЏРµРј РІС‹РґРµР»РµРЅРёРµ РЅР° СЃР»СѓРґСѓСЋС‰РёР№ СѓР·РµР»
             }
 		}
 
 		sqlite3* db;
-		sqlite3_open("places.sqlite",&db);      // Открываем интересующую БД
+		sqlite3_open("places.sqlite",&db);      // РћС‚РєСЂС‹РІР°РµРј РёРЅС‚РµСЂРµСЃСѓСЋС‰СѓСЋ Р‘Р”
 
 			for (int i = 0; i < SelectedRowCount; i++) {
-				VST_SQLite -> DeleteNode(selectedNodes [i]);        // Удалим узел
-				char buf[10] = "";      // Создаем буфер для вектора id до 10 значных чисел
-				itoa(idv[i], buf, 10);		// Записываем в буфер значение из вектора id в десятичном виде
+				VST_SQLite -> DeleteNode(selectedNodes [i]);        // РЈРґР°Р»РёРј СѓР·РµР»
+				char buf[10] = "";      // РЎРѕР·РґР°РµРј Р±СѓС„РµСЂ РґР»СЏ РІРµРєС‚РѕСЂР° id РґРѕ 10 Р·РЅР°С‡РЅС‹С… С‡РёСЃРµР»
+				itoa(idv[i], buf, 10);		// Р—Р°РїРёСЃС‹РІР°РµРј РІ Р±СѓС„РµСЂ Р·РЅР°С‡РµРЅРёРµ РёР· РІРµРєС‚РѕСЂР° id РІ РґРµСЃСЏС‚РёС‡РЅРѕРј РІРёРґРµ
 				sqlite3_stmt *delRowStatement;
-				char sql[] = "delete from moz_places where id=";     // Создаем запрос на удаление из БД
-				strcat(sql, buf);       // Добавляем значение id к SQL-запросу из буфера
-				int result = sqlite3_prepare_v2(db, sql, -1, &delRowStatement, NULL);       // Удаляем из БД
+				char sql[] = "delete from moz_places where id=";     // РЎРѕР·РґР°РµРј Р·Р°РїСЂРѕСЃ РЅР° СѓРґР°Р»РµРЅРёРµ РёР· Р‘Р”
+				strcat(sql, buf);       // Р”РѕР±Р°РІР»СЏРµРј Р·РЅР°С‡РµРЅРёРµ id Рє SQL-Р·Р°РїСЂРѕСЃСѓ РёР· Р±СѓС„РµСЂР°
+				int result = sqlite3_prepare_v2(db, sql, -1, &delRowStatement, NULL);       // РЈРґР°Р»СЏРµРј РёР· Р‘Р”
 				result = sqlite3_step(delRowStatement);
 
-				if(result != SQLITE_OK){		// Обработка события ошибки SQL-запроса
+				if(result != SQLITE_OK){		// РћР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёСЏ РѕС€РёР±РєРё SQL-Р·Р°РїСЂРѕСЃР°
 				   const char * errmsg = sqlite3_errmsg(db);
-				   char errText[] =  "Ошибка SQL-запроса: ";
+				   char errText[] =  "РћС€РёР±РєР° SQL-Р·Р°РїСЂРѕСЃР°: ";
 				   statusLabel -> Caption = strcat(errText,errmsg);
 				}
 
-				sqlite3_finalize(delRowStatement);      // Очищаем Statement
+				sqlite3_finalize(delRowStatement);      // РћС‡РёС‰Р°РµРј Statement
 			}
 
-		sqlite3_close(db);      // Закрываем БД
-		statusLabel -> Caption = "Записи удалены!";
+		sqlite3_close(db);      // Р—Р°РєСЂС‹РІР°РµРј Р‘Р”
+		statusLabel -> Caption = "Р—Р°РїРёСЃРё СѓРґР°Р»РµРЅС‹!";
 	}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TsqliteForm::clearTableButtonClick(TObject *Sender)
 {
-	VST_SQLite -> BeginUpdate();        // Конструкция Begin/EndUpdate для изменения большого количества узлов
+	VST_SQLite -> BeginUpdate();        // РљРѕРЅСЃС‚СЂСѓРєС†РёСЏ Begin/EndUpdate РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ Р±РѕР»СЊС€РѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° СѓР·Р»РѕРІ
 	sqlite3* db;
-	sqlite3_open("places.sqlite",&db);      // Открываем интересующую БД
+	sqlite3_open("places.sqlite",&db);      // РћС‚РєСЂС‹РІР°РµРј РёРЅС‚РµСЂРµСЃСѓСЋС‰СѓСЋ Р‘Р”
 	char *errmsg = NULL;
 	int result = sqlite3_exec(db, "delete from moz_places",
-							NULL, NULL, &errmsg);		// Удаление данных из таблицы в БД
+							NULL, NULL, &errmsg);		// РЈРґР°Р»РµРЅРёРµ РґР°РЅРЅС‹С… РёР· С‚Р°Р±Р»РёС†С‹ РІ Р‘Р”
 
-	if(result != SQLITE_OK){        // Обработка события ошибки SQL-запроса
-		char errText[] = "Ошибка SQL-запроса: ";
+	if(result != SQLITE_OK){        // РћР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёСЏ РѕС€РёР±РєРё SQL-Р·Р°РїСЂРѕСЃР°
+		char errText[] = "РћС€РёР±РєР° SQL-Р·Р°РїСЂРѕСЃР°: ";
 		statusLabel -> Caption = strcat(errText,errmsg);
 		return;
 	}
 
-	VST_SQLite -> Clear();      // Очищаем дерево
+	VST_SQLite -> Clear();      // РћС‡РёС‰Р°РµРј РґРµСЂРµРІРѕ
 	VST_SQLite -> EndUpdate();
-	statusLabel -> Caption = "Таблица очищена!";
-	sqlite3_close(db);      // Закрываем БД
+	statusLabel -> Caption = "РўР°Р±Р»РёС†Р° РѕС‡РёС‰РµРЅР°!";
+	sqlite3_close(db);      // Р—Р°РєСЂС‹РІР°РµРј Р‘Р”
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TsqliteForm::closeButtonClick(TObject *Sender)
 {
-	Close();        // Закрываем программу
+	Close();        // Р—Р°РєСЂС‹РІР°РµРј РїСЂРѕРіСЂР°РјРјСѓ
 }
 //---------------------------------------------------------------------------
 
