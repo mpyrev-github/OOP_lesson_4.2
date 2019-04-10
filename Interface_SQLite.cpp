@@ -49,7 +49,7 @@ void __fastcall TsqliteForm::pullButtonClick(TObject *Sender)
 
 	sqlite3_stmt *pullStatement;
 	int result = sqlite3_prepare_v2(db,"select * from moz_places",
-									-1, &pullStatement, NULL);      // Создаем запрос на вывод таблицы
+					-1, &pullStatement, NULL);      // Создаем запрос на вывод таблицы
 
 	if (result != SQLITE_OK){        // Обработка события ошибки SQL-запроса
 		const char *errmsg = sqlite3_errmsg(db);
@@ -73,7 +73,7 @@ void __fastcall TsqliteForm::pullButtonClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 void __fastcall TsqliteForm::VST_SQLiteFreeNode(TBaseVirtualTree *Sender, PVirtualNode Node)
-		// Обрабатчик события OnFreeNode для очистки узла
+		// Обработчик события OnFreeNode для очистки узла
 {
 	VSTStructVariable *nodeData = (VSTStructVariable *)Sender -> GetNodeData(Node);
 	nodeData -> ~VSTStruct();
@@ -106,12 +106,12 @@ void __fastcall TsqliteForm::delRowButtonClick(TObject *Sender)
 	{
 		// Обработка события удаления первого/последнего узла из списка
 		if ((VST_SQLite -> GetNext(selectedNodes[SelectedRowCount-1])==NULL) && (VST_SQLite -> GetLast(selectedNodes[SelectedRowCount-1])==NULL)) {
-		   VST_SQLite -> RemoveFromSelection;
+		   VST_SQLite -> RemoveFromSelection(selectedNode);
 		}
 		else {
 			if (VST_SQLite -> GetNext(selectedNodes[SelectedRowCount-1])==NULL) {
-				PVirtualNode selectedNext = VST_SQLite -> GetLast(selectedNodes[SelectedRowCount-1]);
-				VST_SQLite -> AddToSelection(selectedNext);     // Переставляем выделение на предыдущий узел
+				PVirtualNode selectedLast = VST_SQLite -> GetLast(selectedNodes[SelectedRowCount-1]);
+				VST_SQLite -> AddToSelection(selectedLast);     // Переставляем выделение на предыдущий узел
 			}
 			else{
 				PVirtualNode selectedNext = VST_SQLite -> GetNext(selectedNodes[SelectedRowCount-1]);
