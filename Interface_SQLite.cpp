@@ -24,7 +24,7 @@ __fastcall TsqliteForm::TsqliteForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TsqliteForm::VST_SQLiteGetText(TBaseVirtualTree *Sender, PVirtualNode Node,
 		  TColumnIndex Column, TVSTTextType TextType, UnicodeString &CellText)
-		// Обрабатчик события OnGetText для отображения содержимого таблицы
+		// Обработчик события OnGetText для отображения содержимого таблицы
 {
 	if (!Node) return;
 	VSTStructVariable *nodeData = (VSTStructVariable *)Sender -> GetNodeData(Node);
