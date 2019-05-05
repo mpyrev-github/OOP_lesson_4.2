@@ -11,7 +11,7 @@ This is ~~the first big~~ fourth project on the course of the OOP from Dmitry Kh
   * delete selected lines;
   * clear database table.
 ### Try the program
-1. If you want to try my program, you can [download](https://github.com/vastXgithub/OOP_lesson_1/archive/master.zip) project.
+1. If you want to try my program, you can [download](https://github.com/vastXgithub/OOP_lesson_4.2/archive/master.zip) project.
 2. Then you must install the [VirtualTreeView](https://github.com/virtual-treeview/virtual-treeview) component into your RAD Studio. I used [CBuilder XE8](https://github.com/Virtual-TreeView/Virtual-TreeView/tree/master/Packages/CBuilder%20XE8).
 3. After that, add the files [sqlite3.c](https://github.com/vastXgithub/OOP_lesson_1/tree/master/sqlite3.c) and [sqlite3.h](https://github.com/vastXgithub/OOP_lesson_1/tree/master/sqlite3.h) into the project.
 4. *Build*.
@@ -38,7 +38,7 @@ If you want to download the project as a .zip file, please [click here](https://
       * удалить выделенные строки;
       * очистить таблицу базы данных.
 ### Попробовать программу
-1. Если вы хотите попробовать мою программу, вы можете [скачать](https://github.com/vastXgithub/OOP_lesson_1/archive/master.zip) проект.
+1. Если вы хотите попробовать мою программу, вы можете [скачать](https://github.com/vastXgithub/OOP_lesson_4.2/archive/master.zip) проект.
 2. Затем вы должны установить компонент [VirtualTreeView](https://github.com/virtual-treeview/virtual-treeview) в свой RAD Studio. Я использовал [CBuilder XE8](https://github.com/Virtual-TreeView/Virtual-TreeView/tree/master/Packages/CBuilder%20XE8).
 3. После этого, добавить файлы [sqlite3.c](https://github.com/vastXgithub/OOP_lesson_1/tree/master/sqlite3.c) и [sqlite3.h](https://github.com/vastXgithub/OOP_lesson_1/tree/master/sqlite3.h) в проект.
 4. *Build*.
